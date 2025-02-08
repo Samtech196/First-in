@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Up Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #4a90e2;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4a90e2;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #357ABD;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Top Up Your Account</h2>
+    <form id="topUpForm">
+        <div class="form-group">
+            <label for="amount">Recharge Amount (₦3000 - ₦15000)</label>
+            <input type="number" id="amount" min="3000" max="15000" required>
+        </div>
+        <button type="submit">Top Up</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('topUpForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const amount = parseInt(document.getElementById('amount').value);
+        
+        // Simulate adding funds to the admin account and updating balance
+        alert(`Successfully recharged ₦${amount} to your account!`);
+        
+        // Update the balance in the dashboard (if necessary)
+        // This can be done via a backend API call to update the database
+        
+        // Redirect back to the dashboard or update the balance directly
+        // window.location.href = 'dashboard.html'; // Uncomment if you have a separate dashboard page
+    });
+</script>
+
+</body>
+</html>

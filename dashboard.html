@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+        header {
+            position: sticky;
+            top: 0;
+            background-color: #4a90e2;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+            z-index: 1000;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #357ABD;
+            color: white;
+        }
+        .navbar .menu {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            right: 20px;
+            background-color: #4a90e2;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        .navbar .menu.active {
+            display: flex;
+        }
+        .navbar .menu a {
+            padding: 10px;
+            text-decoration: none;
+            color: white;
+        }
+        .navbar .menu a:hover {
+            background-color: #357ABD;
+        }
+        .balance {
+            text-align: center;
+            font-size: 20px;
+            margin: 20px 0;
+        }
+        .packages {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .package {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .package h3 {
+            color: #4a90e2;
+        }
+        .countdown {
+            font-size: 18px;
+            color: #e94e77;
+        }
+        button {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #357ABD;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    Investment Dashboard
+</header>
+
+<div class="navbar">
+    <div class="brand">My Investment</div>
+    <div class="menu-toggle">☰</div>
+    <div class="menu" id="menu">
+        <a href="#">Home</a>
+        <a href="#">Products</a>
+        <a href="withdraw.html">Withdraw</a>
+        <a href="topup.html">Top Up</a>
+        <a href="#" id="logoutButton">Logout</a>
+    </div>
+</div>
+
+<div class="balance" id="balance">Current Balance: ₦<span id="balanceAmount">0</span></div>
+
+<div class="packages">
+    <div class="package" data-price="3000" data-return="0.07">
+        <h3>Investment Package 1</h3>
+        <p>Price: ₦3000</p>
+        <p>Daily Return: 7%</p>
+        <div class="countdown" id="countdown1">Countdown: <span id="timer1">24:00:00</span></div>
+        <button onclick="invest(3000, 1)">Invest</button>
+    </div>
+    <div class="package" data-price="6000" data-return="0.07">
+        <h3>Investment Package 2</h3>
+        <p>Price: ₦6000</p>
+        <p>Daily Return: 7%</p>
+        <div class="countdown" id="countdown2">Countdown: <span id="timer2">24:00:00</span></div>
+        <button onclick="invest(6000, 2)">Invest</button>
+    </div>
+    <!-- Additional investment packages... -->
+    <div class="package" data-price="9000" data-return="0.07">
+        <h3>Investment Package 3</h3>
+        <p>Price: ₦9000</p>
+        <p>Daily Return: 7%</p>
+        <div class="countdown" id="countdown3">Countdown: <span id="timer3">24:00:00</span></div>
+        <button onclick="invest(9000, 3)">Invest</button>
+    </div>
+    <div class="package" data-price="12000" data-return="0.07">
+        <h3>Investment Package 4</h3>
+        <p>Price: ₦12000</p>
+        <p>Daily Return: 7%</p>
+        <div class="countdown" id="countdown4">Countdown: <span id="timer4">24:00:00</span></div>
+        <button onclick="invest(12000, 4)">Invest</button>
+    </div>
+    <div class="package" data-price="15000" data-return="0.07">
+        <h3>Investment Package 5</h3>
+        <p>Price: ₦15000</p>
+        <p>Daily Return: 7%</p>
+        <div class="countdown" id="countdown5">Countdown: <span id="timer5">24:00:00</span></div>
+        <button onclick="invest(15000, 5)">Invest</button>
+    </div>
+    <!-- Add more packages as needed -->
+</div>
+
+<script>
+    let balance = 0;
+
+    function invest(price, packageId) {
+        if (balance >= price) {
+            balance -= price;
+            alert(`Invested ₦${price} in Package ${packageId}`);
+            updateBalance();
+            startCountdown(packageId);
+        } else {
+            alert("Insufficient balance!");
+        }
+    }
+
+    function updateBalance() {
+        document.getElementById('balanceAmount').innerText = balance;
+    }
+
+    function startCountdown(packageId) {
+        let timer = 24 * 60 * 60; // 24 hours in seconds
+        const timerElement = document.getElementById(`timer${packageId}`);
+        
+        const interval = setInterval(() => {
+            if (timer <= 0) {
+                clearInterval(interval);
+                alert(`Package ${packageId} investment matured! Adding interest to balance.`);
+                const price = parseInt(document.querySelector(`.package:nth-child(${packageId})`).getAttribute('data-price'));
+                balance += Math.round(price * 0.07);
+                updateBalance();
+            } else {
+                timer--;
+                const hours = Math.floor(timer / 3600);
+                const minutes = Math.floor((timer % 3600) / 60);
+                const seconds = timer % 60;
+                timerElement.innerText = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }
+        }, 1000);
+    }
+
+    document.querySelector('.menu-toggle').addEventListener('click', () => {
+        document.getElementById('menu').classList.toggle('active');
+    });
+
+    document.getElementById('logoutButton').addEventListener('click', () => {
+        alert("Logging out...");
+        // Handle logout logic here
+    });
+</script>
+
+</body>
+</html>
